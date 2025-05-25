@@ -241,7 +241,12 @@ input[type="number"]::-webkit-outer-spin-button {
     position: relative;
     display: flex;
     justify-content: center;
-    max-height: 800px;
+    max-height: 400px;
+    min-width: 200px;
+    max-width: 220px;
+    
+   
+    margin: auto; 
 }
 
 .image-nav {

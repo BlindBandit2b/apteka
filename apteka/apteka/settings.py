@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'main',
     'cart',
     'users',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -140,4 +141,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CART_SESSION_ID = 'cart'
 
 AUTH_USER_MODEL = 'users.User'
+
+STRIPE_TEST_PUBLIC_KEY = os.getenv('STRIPE_TEST_PUBLIC_KEY')
+STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
 

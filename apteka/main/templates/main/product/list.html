@@ -26,14 +26,7 @@
                 </div>
             {% endfor %}
 
-            <h4 class="svoistvo-head">Svoistvo:</h4>
-            {% for svoistvo in svoistvos %}
-                <div class="category-option">
-                    <input type="checkbox" name="svoistvo" id="svoistvo-{{ svoistvo.name }}" value="{{ svoistvo.name }}"
-                    {% if svoistvo.name in selected_svoistvos %}checked{% endif %} onchange="applyFilters()">
-                    <label for="svoistvo-{{ svoistvo.name }}">{{ svoistvo.name }}</label>
-                </div>
-            {% endfor %}
+            
         </form>
 
         <div class="product-list">

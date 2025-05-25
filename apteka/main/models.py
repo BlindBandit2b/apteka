@@ -56,3 +56,13 @@ class DrugItemSvoistvo(models.Model):
 
     class Meta:
         unique_together = ('drug_item', 'svoistvo')
+
+
+class ItemImage(models.Model):
+    product = models.ForeignKey(DrugItem, related_name='images',
+                                on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product/%Y/%m/%d', blank=True)
+
+    
+    def __str__(self):
+        return f'{self.product.name} - {self.image.name}'

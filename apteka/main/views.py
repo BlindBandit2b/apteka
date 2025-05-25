@@ -56,12 +56,10 @@ class DrugItemDetailView(DetailView):
     context_object_name = 'drug_item'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
-'''
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         drug_item = self.object
-        available_svoistvos = DrugItemSvoistvo.objects.filter(drug_item=drug_item,
-                                                           available=True)
-        context['available_svoistvo'] = available_svoistvo
+        available_svoistvos = DrugItemSvoistvo.objects.filter(drug_item=drug_item, available=True)
+        context['available_svoistvos'] = available_svoistvos
         return context
-'''

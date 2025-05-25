@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Svoistvo, Category, DrugItem, DrugItemSvoistvo
+from .models import Svoistvo, Category, DrugItem, DrugItemSvoistvo, ItemImage
 
 class DrugItemSvoistvoInLine(admin.TabularInline): 
     model = DrugItemSvoistvo
+    extra = 4
+
+class ItemImageInline(admin.TabularInline):
+    model = ItemImage
     extra = 4
 
 @admin.register(Svoistvo)
@@ -24,4 +28,4 @@ class DrugItemAdmin(admin.ModelAdmin):
     list_filter = ('available', 'category')
     prepopulated_fields = {'slug': ('name',)}
     ordering = ('-created_at',)
-    inlines = [DrugItemSvoistvoInLine]
+    inlines = [DrugItemSvoistvoInLine, ItemImageInline]

@@ -1,0 +1,106 @@
+
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block title %}Apteka Interlude - Catalog{% endblock title %}
+
+{% block content %}
+    <h1 class="apt-head text-uppercase" id="apteka-title">Apteka interlude - ALL</h1>
+    <div class="catalog d-flex">
+        <form action="{% url "main:catalog" %}" method="get" class="sidebar" id="filter-form">
+            <h4 class="price-head">Price Range:</h4>
+            <div class="price-range d-flex justify-content-between">
+                <input type="number" name="min_price" id="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}" oninput="debounceApplyFilters()">
+                <input type="number" name="max_price" id="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}" oninput="debounceApplyFilters()">
+            </div>
+
+            <h4 class="category-head">Category:</h4>
+            {% for category in categories %}
+                <div class="category-option">
+                    <input type="checkbox" name="category" id="category-{{ category.slug }}" value="{{ category.slug }}"
+                    {% if category.slug in selected_categories %}checked{% endif %} onchange="applyFilters()">
+                    <label for="category-{{ category.slug }}" class="d-flex">
+                        <div class="category-name">{{ category.name }}</div> <div class="category-len">{{ category.get_item_count }}</div>
+                    </label>
+                </div>
+            {% endfor %}
+
+            <h4 class="svoistvo-head">Svoistvo:</h4>
+            {% for svoistvo in svoistvos %}
+                <div class="category-option">
+                    <input type="checkbox" name="svoistvo" id="svoistvo-{{ svoistvo.name }}" value="{{ svoistvo.name }}"
+                    {% if svoistvo.name in selected_svoistvos %}checked{% endif %} onchange="applyFilters()">
+                    <label for="svoistvo-{{ svoistvo.name }}">{{ svoistvo.name }}</label>
+                </div>
+            {% endfor %}
+        </form>
+
+        <div class="product-list">
+            <div class="card-container d-flex flex-wrap">
+                {% for item in drug_items %}
+                    <div class="card">
+                      
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="product-image">
+                            {% endif %}
+                            <div class="card-info">
+                                <h5>{{ item.name }}</h5>
+                                <p>${{item.get_price_with_discount}}</p>
+                                
+                            </div>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>No products.</p>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.category-option input[type="checkbox"]');
+            const form = document.getElementById('filter-form')
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    form.submit();
+                });
+            });
+        });
+
+        let timeout;
+        function debounceApplyFilters() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const form = document.getElementById('filter-form');
+                form.submit();
+            }, 1000);
+        }
+
+        function applyFilters() {
+            const form = document.getElementById('filter-form');
+            form.submit();
+            updateTitle();
+        }
+
+        function updateTitle() {
+            const checkboxes = document.querySelectorAll('input[name="category"]:checked');
+            const titleElement = document.getElementById('apteka-title');
+
+            if (checkboxes.length > 0) {
+                const selectedCategories = Array.from(checkboxes).map(checkbox => {
+                    const categoryText = checkbox.nextElementSibling.textContent.trim();
+                    return categoryText;
+                });
+                titleElement.textContent = `APTEKA INTERLUDE - ${selectedCategories.join(', ')}`;
+            } else {
+                titleElement.textContent = 'APTEKA INTERLUDE - ALL';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateTitle);
+    </script>
+{% endblock content %}

@@ -41,7 +41,7 @@
             {% endif %}
 
             <div class="detail-cart-form">
-                <form action="" method="post">
+                <form action="{% url 'cart:cart_add' drug_item.id %}" method="post">
                     {% csrf_token %}
                     <div class="select-svoistvo d-flex gap-2">
                         <label for="svoistvo">Svoistvo:</label>
